@@ -1,0 +1,635 @@
+@use "helpers/" as helper;
+
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;0,900;1,700;1,900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+@import "tailwind.css"; // Importer Tailwind avant le SCSS;
+
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-group(root) {
+    animation-duration: 250ms;
+}
+
+::view-transition-old {
+    opacity: 0;
+}
+
+::view-transition-new {
+    opacity: 1;
+}
+
+@font-face {
+    font-family: "h_hachimakiregular";
+    src: url("../fonts/hachimaki/hachimaki-eawz8-webfont.woff2") format("woff2"),
+        url("../fonts/hachimaki/hachimaki-eawz8-webfont.woff") format("woff"),
+        url("../fonts/hachimaki/Hachimaki-EawZ8.otf") format("otf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    @apply text-gray-700;
+    font-family: "Rubik";
+    background: linear-gradient(
+        84deg,
+        rgba(2, 0, 36, 1) 0%,
+        rgb(4, 28, 51) 50%
+    );
+}
+h1 {
+    @apply text-2xl font-bold;
+}
+h2 {
+    @apply mb-4;
+    font-size: clamp(2.75rem, 10vw, 3.75rem);
+    line-height: normal;
+}
+h3 {
+    @apply text-lg font-bold mb-1;
+}
+ul {
+    @apply my-10;
+}
+p {
+    /* @apply my-2; */
+}
+
+a {
+    transition: color 250ms ease, text-decoration 250ms ease;
+    text-decoration: underline;
+
+    &:hover {
+        color: theme("colors.primary");
+        text-decoration-color: theme("colors.primary");
+    }
+}
+
+.f-hachimaki {
+    font-family: "h_hachimakiregular";
+}
+
+.home-layout {
+    header {
+        nav {
+            @media (width < 65rem), (height < 45rem) {
+                align-items: flex-start;
+            }
+
+            h1 {
+                .dojo-logo {
+                    p {
+                        opacity: 0;
+                        translate: -5rem 0;
+                        animation-name: slideleft;
+                        animation-duration: 400ms;
+                        animation-delay: 1s;
+                        animation-fill-mode: both;
+                    }
+                }
+            }
+        }
+    }
+
+    .icon-wrapper.animated {
+        @apply absolute inline-flex items-center justify-center p-3 rounded border-current;
+        right: 2rem;
+        bottom: 4rem;
+        width: 6rem;
+        border: 8px solid;
+        border-radius: 50%;
+        outline: 0.5px solid #fafafa;
+        outline-offset: 0.6rem;
+
+        @media (width > 65rem) {
+            width: 10rem;
+            right: 3rem;
+            bottom: 3rem;
+        }
+
+        .star-icon {
+            top: -3px;
+            fill: #fff;
+
+            @media (width > 65rem) {
+                top: -5px;
+            }
+        }
+    }
+}
+
+/* header */
+header {
+    @apply flex fixed z-10 w-full gap-5 mx-auto;
+    view-transition-name: header;
+    background-color: transparent;
+    transition-property: background-color padding-block;
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
+
+    &.inverted {
+        background-color: #0a0e27ae;
+        padding-block: 0.5rem;
+
+        h1 {
+            .dojo-logo {
+                .logo-text {
+                    p {
+                        opacity: 1;
+                        translate: 0 0;
+                        animation-name: slideright;
+                        animation-duration: 400ms;
+                        animation-delay: 50ms;
+                        animation-fill-mode: forwards;
+                    }
+                }
+
+                #logo-80 {
+                    width: 80px;
+                }
+            }
+        }
+
+        nav ul li a {
+            color: #fff;
+        }
+    }
+
+    nav {
+        @apply flex items-center justify-between w-full;
+
+        h1 {
+            .dojo-logo {
+                @apply flex;
+
+                .logo-text {
+                    @apply hidden flex-col justify-center;
+
+                    p {
+                        @apply text-primary leading-none;
+                        @extend .f-hachimaki;
+                        text-shadow: -4px 3px 0 #000000, -6px 4px 0 #000;
+                        transition-property: transform, opacity;
+                        transition-duration: 250ms;
+                        transition-timing-function: ease;
+                        opacity: 0;
+                        translate: -5rem 0;
+                        animation-name: slideleft;
+                        animation-duration: 400ms;
+                        animation-delay: 1s;
+                        animation-fill-mode: forwards;
+
+                        z-index: 0;
+                    }
+
+                    @media screen and (width >= 47.938rem) {
+                        display: flex;
+                    }
+                }
+
+                #logo-80 {
+                    width: 120px;
+                    height: 58px;
+                    z-index: 5;
+                    transition: width 250ms ease;
+                }
+            }
+        }
+
+        ul {
+            @apply flex m-0;
+
+            li {
+                a {
+                    @apply text-primary text-base lg:text-xl inline-block;
+                    transition: color 250ms ease;
+                    text-decoration: none;
+
+                    &.btn {
+                        display: none;
+                        @include helper.button(1, 8, 10);
+
+                        @media (width < 65rem), (height < 45rem) {
+                            display: inline-block;
+                        }
+                    }
+
+                    &:hover {
+                        color: #fff;
+                        text-decoration: underline;
+                    }
+                }
+
+                &:not(:last-child) {
+                    margin-right: 1.5rem;
+                }
+            }
+        }
+    }
+}
+
+.hero {
+    @apply h-screen h-dvh w-full relative flex items-center;
+
+    video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+        background: rgb(2, 0, 36);
+    }
+
+    .overlay {
+        @apply absolute top-0 left-0 w-full h-full opacity-85;
+        background: rgb(2, 0, 36);
+        background: linear-gradient(
+            84deg,
+            rgba(2, 0, 36, 1) 0%,
+            rgb(4, 28, 51) 50%
+        );
+    }
+
+    .quotes {
+        @apply absolute top-0 right-[3rem] h-full flex justify-end;
+        padding-top: 1rem;
+        z-index: 5;
+        transition-property: visibility, opacity;
+        transition-duration: 250ms;
+        transition-timing-function: ease;
+        opacity: 0;
+        visibility: hidden;
+
+        .separator {
+            width: 2.5%;
+            margin-right: 0.5rem;
+
+            svg {
+                fill: theme("colors.primary");
+            }
+        }
+
+        .sayings {
+            display: flex;
+
+            p {
+                @apply text-white-100 m-0 font-light;
+                font-size: 0.75rem;
+                writing-mode: vertical-lr;
+                text-orientation: upright;
+                pointer-events: none;
+
+                &:not(:last-child) {
+                    margin-right: 0.5rem;
+                }
+            }
+        }
+
+        @media (width >= 65rem) and (height > 45rem) {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .hero-content {
+        @apply relative;
+        padding-top: 35px;
+
+        @media (height >= 45rem) {
+            padding-top: 0;
+        }
+
+        h2 {
+            @apply text-white-100 text-balance m-0 font-light;
+            font-family: "h_hachimakiregular";
+            font-size: clamp(2.75rem, 10vw, 10rem);
+            line-height: normal;
+            text-shadow: -4px 3px 0 #3a50d9, -14px 7px 0 #0a0e27;
+            opacity: 0;
+            translate: 0 3rem;
+            animation-name: slideup;
+            animation-duration: 400ms;
+            animation-delay: 1s;
+            animation-fill-mode: forwards;
+
+            @media (height < 45rem) {
+                font-size: clamp(2.75rem, 10vw, 5rem);
+            }
+        }
+
+        p {
+            @apply text-primary leading-none mt-4;
+            font-size: clamp(1rem, 5vw, 2rem);
+            transform: translate(0px, 0px);
+            opacity: 0;
+            transition-property: transform, opacity;
+            transition-duration: 250ms;
+            transition-timing-function: ease;
+            animation-name: slideup;
+            animation-duration: 400ms;
+            animation-delay: 1.5s;
+            animation-fill-mode: forwards;
+
+            @media (height < 45rem) {
+                font-size: 1.5rem;
+            }
+        }
+
+        a {
+            &.btn {
+                margin-block-start: 2.5rem;
+                @include helper.button;
+
+                @media (height < 45rem) {
+                    display: none;
+                }
+            }
+        }
+
+        .content {
+            p {
+                a {
+                    &:hover {
+                        color: #fff;
+                        text-decoration-color: currentColor;
+                    }
+                }
+            }
+        }
+    }
+
+    .icon-wrapper {
+        @apply text-primary;
+
+        &.animated {
+            transition-property: transform, rotate;
+            animation-name: rotateicon;
+            animation-duration: 25s;
+            animation-timing-function: linear;
+            animation-direction: reverse;
+            animation-iteration-count: infinite;
+            animation-fill-mode: forwards;
+        }
+    }
+}
+
+.star-icon {
+    max-width: 100%;
+    height: auto;
+    position: relative;
+}
+
+.photo-credit {
+    @apply fixed bottom-4 text-gray-200 bg-stone-800 rounded p-2;
+    font-size: 0.55rem;
+    left: 3rem;
+
+    a {
+        @apply underline transition duration-150 hover:text-primary;
+    }
+
+    @media screen and (width >= 47.938rem) {
+        font-size: 0.75rem;
+    }
+}
+
+/* form elements */
+form {
+    @apply max-w-screen-sm;
+}
+input,
+select,
+textarea {
+    @apply block w-full mt-2 mb-4 p-2;
+}
+
+/* custom classes */
+.container {
+    @apply max-w-screen-lg mx-auto px-12 py-8;
+}
+
+.fw-container {
+    @apply px-5 py-8;
+
+    @media screen and (width >= 47.938rem) {
+        @apply px-12 py-8;
+    }
+}
+
+.ninjas-list {
+    @apply grid md:grid-cols-2 lg:grid-cols-3 gap-4;
+    transition-property: translate, opacity;
+    transition-duration: 250ms;
+    transition-timing-function: ease;
+    translate: 3rem 0;
+    opacity: 0;
+}
+
+.layout-container {
+    padding-top: 10rem;
+
+    .ninjas-list {
+        animation-name: slideup;
+        animation-duration: 400ms;
+        animation-delay: 1s;
+        animation-fill-mode: forwards;
+    }
+}
+
+.card {
+    @apply relative bg-[lavender] rounded py-8 px-6 flex flex-col justify-between overflow-hidden h-full overflow-hidden;
+    transition: translate 250ms cubic-bezier(0.66, 0, 0.34, 1);
+    text-decoration: none;
+
+    .mask {
+        position: absolute;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+        background-color: theme("colors.primary");
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transform: translate(265px, 145px) rotate(45deg);
+        transition: all 0.2s cubic-bezier(0.66, 0, 0.34, 1);
+
+        .icon-wrapper {
+            position: absolute;
+            top: -50px;
+            right: -150px;
+            width: 400px;
+            opacity: 0.25;
+        }
+    }
+
+    .inner {
+        display: flex;
+
+        .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: flex-start;
+            border: 6px solid;
+            border-radius: 50%;
+            width: 60px;
+            margin-right: 1rem;
+
+            svg {
+                min-width: 100%;
+                height: auto;
+            }
+        }
+
+        .details {
+            h3 {
+                transition: color 250ms ease;
+            }
+
+            h3,
+            p {
+                @apply max-w-md mb-1;
+                color: #0a0e27;
+                text-wrap: balance;
+            }
+        }
+    }
+
+    .btn {
+        transition-property: translate, opacity;
+        transition-duration: 250ms;
+        transition-timing-function: ease;
+        translate: 3rem 0;
+        opacity: 0;
+        color: #fff;
+    }
+
+    &.highlight {
+        .highlight-quote {
+            @apply absolute bottom-0 right-0 bg-primary text-white-100 rounded-tl-lg p-2;
+            transition: opacity 250ms ease;
+            opacity: 1;
+            font-size: 0.75rem;
+
+            @media (width >= 47.938rem) {
+                font-size: 1rem;
+            }
+        }
+    }
+
+    &:hover,
+    &:focus-visible {
+        translate: 0 -0.45rem;
+
+        .avatar {
+            display: none;
+        }
+
+        .inner {
+            .details {
+                h3 {
+                    position: relative;
+                    color: #fff;
+                }
+            }
+        }
+
+        .mask {
+            opacity: 1;
+            transform: translate(0, 0) rotate(0deg);
+        }
+
+        .btn {
+            translate: 0 0;
+            opacity: 1;
+            transition-delay: 250ms;
+        }
+
+        &.highlight {
+            .highlight-quote {
+                opacity: 0;
+            }
+        }
+    }
+}
+
+.custom-pagination {
+    margin-bottom: 3rem;
+
+    nav {
+        p {
+            color: lavender;
+        }
+
+        span {
+            a {
+                background-color: lavender;
+                text-decoration: none;
+
+                &:hover {
+                    color: theme("colors.primary");
+                }
+            }
+
+            span {
+                span {
+                    background-color: lavender;
+                }
+            }
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01s !important;
+        transition-duration: 0.01s !important;
+    }
+}
+
+@keyframes slideup {
+    from {
+        opacity: 0;
+        translate: 0 3rem;
+    }
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+@keyframes slideleft {
+    from {
+        opacity: 0;
+        translate: -5rem 0;
+    }
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+
+@keyframes slideright {
+    from {
+        opacity: 1;
+        translate: 0 0;
+    }
+    to {
+        opacity: 0;
+        translate: -5rem 0;
+    }
+}
+
+@keyframes rotateicon {
+    from {
+        rotate: 0deg;
+    }
+    to {
+        rotate: 1turn;
+    }
+}

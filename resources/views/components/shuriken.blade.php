@@ -1,6 +1,6 @@
-<div class="icon-wrapper" title="SVG from https://www.svgrepo.com/">
+<div class="icon-wrapper {{ $attributes->get('class') }}" title="SVG from https://www.svgrepo.com/">
     <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-    <svg class="fill-[#eb4432] star-icon" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42.072 42.072" xml:space="preserve">
+    <svg class="star-icon" height="800px" width="800px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 42.072 42.072" xml:space="preserve">
         <g>
             <path d="M41.594,16.129H30.725c-0.552,0-0.984,0.458-1.148,0.986c-0.42,1.35-1.68,2.329-3.166,2.329
             c-1.832,0-3.315-1.484-3.315-3.315c0-1.019,0.46-1.931,1.185-2.539c0.422-0.355,0.713-0.945,0.541-1.47L21.344,1.418
