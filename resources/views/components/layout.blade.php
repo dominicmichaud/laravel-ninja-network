@@ -14,18 +14,34 @@
     @endif
 
     <x-header>
-        <ul>
-            <li>
-                <a href="{{ route('ninjas.index') }}">
-                    All Ninjas
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('ninjas.create') }}">
-                    Create New Ninja
-                </a>
-            </li>
-        </ul>
+        <div class="right-item">
+            <ul role="navigation" class="main-menu">
+                <li>
+                    <a href="{{ route('ninjas.index') }}">
+                        All Ninjas
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('ninjas.create') }}">
+                        Create New Ninja
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        Login
+                    </a>
+                </li>
+            </ul>
+            <div class="mobile-toggle">
+                <button class="menu-icon menu-btn">
+                    <input class="menu-icon__cheeckbox" type="checkbox" />
+                    <div>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+            </div>
+        </div>
     </x-header>
 
     <main class="fw-container layout-container">

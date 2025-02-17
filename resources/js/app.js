@@ -14,4 +14,23 @@ window.onload = () => {
                 .classList.remove(className);
         }
     };
+
+    const menu = document.querySelector(".main-menu");
+    const toggle = document.querySelector(".menu-btn");
+    const body = document.body;
+
+    toggle.addEventListener("click", () => {
+        if (menu.classList.contains("open")) {
+            menu.classList.toggle("open");
+            menu.classList.add("closing");
+        } else {
+            menu.classList.toggle("open");
+        }
+        body.classList.toggle("menu-opened");
+        toggle.classList.toggle("active");
+    });
+
+    menu.onanimationend = () => {
+        menu.classList.remove("closing");
+    };
 };

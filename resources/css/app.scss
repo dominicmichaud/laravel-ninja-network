@@ -31,18 +31,27 @@
 
 body {
     @apply text-gray-700;
-    font-family: "Rubik";
+    font-family: Mulish, ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
     background: linear-gradient(
         84deg,
         rgba(2, 0, 36, 1) 0%,
         rgb(4, 28, 51) 50%
     );
+
+    &.menu-opened {
+        overflow: hidden;
+    }
 }
+
 h1 {
     @apply text-2xl font-bold;
 }
 h2 {
     @apply mb-4;
+    font-family: "h_hachimakiregular";
+    color: theme("colors.primary");
     font-size: clamp(2.75rem, 10vw, 3.75rem);
     line-height: normal;
 }
@@ -162,6 +171,9 @@ header {
         h1 {
             .dojo-logo {
                 @apply flex;
+                text-decoration: none;
+                color: unset;
+                text-decoration-color: unset;
 
                 .logo-text {
                     @apply hidden flex-col justify-center;
@@ -197,14 +209,45 @@ header {
             }
         }
 
+        .right-item {
+            @apply flex;
+        }
+
         ul {
             @apply flex m-0;
+            position: fixed;
+            left: -100%;
+            top: 0;
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            align-items: center;
+            background-color: #0a0e27;
+            transition: left 0.2s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+
+            &.open {
+                animation: slideIn 0.5s forwards;
+
+                li {
+                    a {
+                        visibility: visible;
+                        pointer-events: visible;
+                    }
+                }
+            }
+
+            &.closing {
+                animation: slideOut 0.5s forwards;
+            }
 
             li {
                 a {
                     @apply text-primary text-base lg:text-xl inline-block;
                     transition: color 250ms ease;
                     text-decoration: none;
+                    visibility: hidden;
+                    pointer-events: none;
 
                     &.btn {
                         display: none;
@@ -219,10 +262,118 @@ header {
                         color: #fff;
                         text-decoration: underline;
                     }
+
+                    @media (width >= 65rem) {
+                        visibility: visible;
+                        pointer-events: visible;
+                    }
                 }
 
                 &:not(:last-child) {
                     margin-right: 1.5rem;
+                }
+            }
+
+            @media (width >= 65rem) {
+                position: relative;
+                left: unset;
+                top: unset;
+                height: unset;
+                flex-direction: row;
+                justify-content: flex-start;
+                width: auto;
+                align-items: flex-start;
+                background-color: transparent;
+            }
+        }
+
+        .mobile-toggle {
+            .menu-icon {
+                --bar-bg: theme("colors.primary");
+                position: relative;
+                display: none;
+                width: 25px;
+                height: 25px;
+                cursor: pointer;
+                transform: scale(1.5);
+
+                @media (width < 65rem) {
+                    display: inline-block;
+                }
+
+                .menu-icon__cheeckbox {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    cursor: pointer;
+                    z-index: 2;
+                    -webkit-touch-callout: none;
+                    position: absolute;
+                    opacity: 0;
+                }
+
+                div {
+                    margin: auto;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    bottom: 0;
+                    width: 22px;
+                    height: 12px;
+
+                    span {
+                        position: absolute;
+                        display: block;
+                        width: 100%;
+                        height: 2px;
+                        background-color: var(--bar-bg, #000);
+                        border-radius: 1px;
+                        transition: all 0.2s
+                            cubic-bezier(0.1, 0.82, 0.76, 0.965);
+
+                        &:first-of-type {
+                            top: 0;
+                        }
+                        &:last-of-type {
+                            bottom: 0;
+                        }
+                    }
+                }
+
+                &.active,
+                .menu-icon__cheeckbox:checked + div {
+                    span {
+                        &:first-of-type {
+                            transform: rotate(45deg);
+                            top: 5px;
+                        }
+                        &:last-of-type {
+                            transform: rotate(-45deg);
+                            bottom: 5px;
+                        }
+                    }
+                }
+
+                &.active:hover span:first-of-type,
+                &.active:hover span:last-of-type,
+                &:hover .menu-icon__cheeckbox:checked + div span:first-of-type,
+                &:hover .menu-icon__cheeckbox:checked + div span:last-of-type {
+                    width: 22px;
+                }
+
+                &:hover {
+                    // no need hover effect on mobile.
+                    @media (min-width: 1024px) {
+                        span:first-of-type {
+                            width: 26px;
+                        }
+
+                        span:last-of-type {
+                            width: 12px;
+                        }
+                    }
                 }
             }
         }
@@ -387,7 +538,7 @@ header {
 .photo-credit {
     @apply fixed bottom-4 text-gray-200 bg-stone-800 rounded p-2;
     font-size: 0.55rem;
-    left: 3rem;
+    left: 1.25rem;
 
     a {
         @apply underline transition duration-150 hover:text-primary;
@@ -395,6 +546,7 @@ header {
 
     @media screen and (width >= 47.938rem) {
         font-size: 0.75rem;
+        left: 3rem;
     }
 }
 
@@ -487,15 +639,24 @@ textarea {
         }
 
         .details {
-            h3 {
-                transition: color 250ms ease;
-            }
-
             h3,
             p {
                 @apply max-w-md mb-1;
                 color: #0a0e27;
                 text-wrap: balance;
+            }
+
+            h3 {
+                transition: color 250ms ease;
+                margin-bottom: 0;
+            }
+
+            hr {
+                display: block;
+                background-color: #2e2e2e;
+                width: 100%;
+                height: 2px;
+                margin-block: 1rem;
             }
         }
     }
@@ -585,10 +746,201 @@ textarea {
     }
 }
 
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    a,
+    form {
+        margin-bottom: 0;
+    }
+
+    .back-btn {
+        display: inline-block;
+        font-family: "h_hachimakiregular";
+        color: theme("colors.primary");
+        font-size: clamp(1rem, 10vw, 2rem);
+        line-height: normal;
+        text-decoration: none;
+        transition: color 250ms ease;
+        margin-bottom: 0;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+
+    form {
+        button {
+            color: theme("colors.primary");
+            text-decoration: underline;
+        }
+    }
+}
+
+.infos-card {
+    @apply bg-[lavender] p-4 rounded h-full;
+    transition-property: transform, opacity;
+    transition-duration: 250ms;
+    transition-timing-function: ease;
+    opacity: 0;
+    translate: 0 3rem;
+    animation-name: slideup;
+    animation-duration: 400ms;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+
+    .inner {
+        @apply py-4;
+        display: flex;
+        flex-direction: column;
+
+        @media (width >= 47.938rem) {
+            flex-direction: row;
+        }
+
+        .avatar {
+            @apply w-[100px] flex items-center justify-center self-start border border-solid border-[6px] border-black rounded-[50%] p-1 bg-white-100 mb-4;
+
+            @media (width >= 47.938rem) {
+                @apply mb-0;
+            }
+        }
+
+        .details {
+            @apply px-0 w-full;
+
+            @media (width >= 47.938rem) {
+                @apply ml-4 px-2;
+            }
+
+            h2 {
+                font-family: inherit;
+                color: inherit;
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            hr {
+                display: block;
+                background-color: #2e2e2e;
+                width: 100%;
+                height: 2px;
+                margin-block: 1rem;
+            }
+
+            .progress-wrapper {
+                padding-block: 1rem;
+
+                .progressbar {
+                    @apply block rounded-full bg-indigo-200;
+                    height: 16px;
+
+                    .progress-bg {
+                        @apply block h-4 rounded-full bg-indigo-600 text-center text-[10px]/4;
+
+                        &.empty-bg {
+                            background-color: transparent;
+
+                            .progress-text {
+                                color: #0a0e27;
+                            }
+                        }
+
+                        .progress-text {
+                            @apply font-bold text-white;
+                        }
+                    }
+                }
+            }
+
+            .bio {
+                margin-top: 1.5rem;
+            }
+        }
+    }
+}
+
+.dojo-card {
+    @apply text-white-100 rounded h-full p-4 rounded;
+    background: #0575e6; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+        to right,
+        rgb(79 70 229),
+        rgb(81, 101, 181)
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+        to right,
+        rgb(79 70 229),
+        rgb(81, 101, 181)
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    transition-property: transform, opacity;
+    transition-duration: 250ms;
+    transition-timing-function: ease;
+    opacity: 0;
+    translate: 0 3rem;
+    animation-name: slideup;
+    animation-duration: 400ms;
+    animation-delay: 1.5s;
+    animation-fill-mode: forwards;
+
+    .inner {
+        @apply px-0 py-4 w-full;
+
+        @media (width >= 47.938rem) {
+            @apply px-2;
+        }
+    }
+
+    h2 {
+        font-family: inherit;
+        color: inherit;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    hr {
+        display: block;
+        background-color: currentColor;
+        width: 100%;
+        height: 2px;
+        margin-block: 1rem;
+    }
+
+    .description {
+        margin-top: 1.5rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01s !important;
         transition-duration: 0.01s !important;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        left: -100%;
+    }
+
+    to {
+        left: 0;
+    }
+}
+
+@keyframes slideOut {
+    0% {
+        left: 0;
+    }
+
+    to {
+        left: -100%;
     }
 }
 

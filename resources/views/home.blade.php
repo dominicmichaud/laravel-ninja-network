@@ -31,7 +31,7 @@
             <div class="hero-content">
                 <h2>The (Fake)<br>Ninja Network</h2>
                 <div class="content max-w-md lg:max-w-xl">
-                    <p>Net Ninja's <a href="https://www.youtube.com/playlist?list=PL4cUxeGkcC9gF5Gez17eHcDIxrpVSBuVt" target="_blank">Laravel YouTube Course</a> pushed to the Max</p>
+                    <p><a href="https://www.youtube.com/playlist?list=PL4cUxeGkcC9gF5Gez17eHcDIxrpVSBuVt" target="_blank">Net Ninja's Laravel YouTube Course</a> pushed to the Max</p>
                 </div>
                 <a href="/ninjas" class="btn btn--primary mt-4 hidden lg:inline-block">
                     Find some Ninjas
