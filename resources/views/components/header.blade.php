@@ -1,4 +1,4 @@
-<header>
+<header class="fw-container">
     <nav>
         <h1>
             <x-logo></x-logo>

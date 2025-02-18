@@ -2,7 +2,18 @@
 ['highlight' => false]
 )
 
-<div @class(['highlight'=> $highlight, 'card']) data-title="{{ $attributes->get('title') }}">
+@php
+$quotes = ['Hecking powerful', 'Power beyond imagination', 'Inconceivable! (Power)', 'Over 9000!', 'Brute force', 'Absolute power', 'Goku level', 'Overpowered', 'Giga Chad', 'Musclehead', 'Flawless', 'Insane power', 'Thicc (Muscles)', 'Power of the Gods', 'Herculean', 'Certified Badass', 'Deadly shadow', 'Invisible to the eyes', 'Master', 'Martial Arts specialist'];
+@endphp
+
+<a href="{{ $attributes->get('href') }}" @class(['highlight'=> $highlight, 'card']) data-title="{{ $attributes->get('title') }}">
+    <div class="mask">
+        <x-shuriken></x-shuriken>
+    </div>
     {{ $slot }}
-    <a href="{{ $attributes->get('href') }}" class="btn">View details</a>
-</div>
+    @if($highlight)
+    <div class="highlight-quote">
+        {{ $quotes[array_rand($quotes)] }}
+    </div>
+    @endif
+</a>
